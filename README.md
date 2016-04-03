@@ -32,8 +32,8 @@ Events currently on the **Page** globally that are supported are:
 - Page.navigatedFromEvent
 - Page.shownModallyEvent
 - Page.showingModallyEvent
-- View.loaded
-- View.unloaded
+- View.loadedEvent
+- View.unloadedEvent
 
 If you have any other global events you would like supported please open an issue on the github issue tracker and I will investigate its relevance.
 
