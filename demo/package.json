@@ -1,0 +1,12 @@
+{
+  "nativescript": {
+    "id": "org.nativescript.demo",
+    "tns-android": {
+      "version": "1.7.1"
+    }
+  },
+  "dependencies": {
+    "nativescript-globalevents": "file:..",
+    "tns-core-modules": "1.7.1"
+  }
+}

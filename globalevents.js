@@ -33,8 +33,8 @@ eventHandlers[Page.navigatingFromEvent] = [];
 eventHandlers[Page.navigatedFromEvent] = [];
 eventHandlers[Page.shownModallyEvent] = [];
 eventHandlers[Page.showingModallyEvent] = [];
-eventHandlers[View.loaded] = [];
-eventHandlers[View.unloaded] = [];
+eventHandlers[View.loadedEvent] = [];
+eventHandlers[View.unloadedEvent] = [];
 
 // The event handler names
 var eventNames = {};
@@ -44,8 +44,8 @@ eventNames[Page.navigatedFromEvent] = 'onNavigatedFrom';
 eventNames[Page.navigatingFromEvent] = 'onNavigatingFrom';
 eventNames[Page.shownModallyEvent] = '_raiseShownModallyEvent';
 eventNames[Page.showingModallyEvent] = '_raiseShowingModallyEvent';
-eventNames[View.loaded] = 'onLoaded';
-eventNames[View.unloaded] =  'onUnloaded';
+eventNames[View.loadedEvent] = 'onLoaded';
+eventNames[View.unloadedEvent] =  'onUnloaded';
 
 
 /**
@@ -149,20 +149,51 @@ function indexOfListener (events, callback, thisArg) {
 
 
 /**
- * Setups a custom event handler for usaga
+ * Setups a custom event handler for usage
  * @param eventType
  * @returns {Function}
  */
 function getEventHandler(eventType) {
-    return function () {
+    return function (arg1, arg2) {
         var eh = eventHandlers[eventType];
+
+        // Run real original event which will trigger any configuration that needs to be setup before our event is ran
+        events[eventType].apply(this, arguments);
+
+
+        var eventArgs;
+        switch (eventType) {
+            case Page.navigatingToEvent:
+                eventArgs = this.createNavigatedData(Page.navigatingToEvent, arg2);
+                break;
+            case Page.shownModallyEvent:
+                eventArgs = {
+                    eventName: Page.shownModallyEvent,
+                    object: this,
+                    context: arg2};
+                break;
+            case Page.showingModallyEvent:
+                eventArgs = {
+                    eventName: Page.showingModallyEvent,
+                    object: this
+                };
+                break;
+            case View.unloadedEvent:
+            case View.loadedEvent:
+                eventArgs = {
+                    eventName: eventType,
+                    object: this
+                };
+                break;
+            default:
+                eventArgs = this.createNavigatedData(eventType, arg1);
+        }
         if (typeof eh !== 'undefined' && eh.length) {
             for (var i = 0; i < eh.length; i++) {
                 var thisArg = eh[i].thisArg || this;
-                eh[i].callback.apply(thisArg, arguments);
+                eh[i].callback.call(thisArg, eventArgs);
             }
         }
-        events[eventType].apply(this, arguments);
     };
 }
 
