@@ -44,7 +44,7 @@ Well, my usage is I have several plugins that need to be notified when a new pag
 require('nativescript-globalevents'); // need only once in the application total
 
 var Page = require('ui/page').Page;
-Page.on(Page.navigatingTo, function() { console.log("We have navigated to a new page!"); });
+Page.on(Page.navigatingToEvent, function() { console.log("We have navigated to a new page!"); });
 ```
 
 ## Why use this?
