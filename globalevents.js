@@ -15,12 +15,14 @@
 var Page = require('ui/page').Page;
 var View = require('ui/core/view').View;
 
-
-// If NS has added this ability to core; we want our plugin to gracefully stop working without doing anything...
-if (Page.on || Page.addEventListener) {
-    console.log("NativeScript-globalevents is disabled; functionality appears to be already present!");
-    return;
-}
+// Webpack requires the return in module to be wrapped with an IIFE
+(function() {
+    // If NS has added this ability to core; we want our plugin to gracefully stop working without doing anything...
+    if (Page.on || Page.addEventListener) {
+        console.log("NativeScript-globalevents is disabled; functionality appears to be already present!");
+        return;
+    }
+}());
 
 // Setup the original events tracking
 var events = {};
