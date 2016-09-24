@@ -5,7 +5,7 @@
  * I do contract work in most languages, so let me solve your problems!
  *
  * Any questions please feel free to email me or put a issue up on the github repo
- * Version 1.0.0                                      Nathan@master-technology.com
+ * Version 1.0.1                                      Nathan@master-technology.com
  *********************************************************************************/
 "use strict";
 
@@ -18,77 +18,76 @@ var View = require('ui/core/view').View;
 
 // If NS has added this ability to core; we want our plugin to gracefully stop working without doing anything...
 if (Page.on || Page.addEventListener) {
-    console.log("NativeScript-globalevents is disabled; functionality appears to be already present!");
-    return;
-}
+    console.log("NativeScript-globalevents auto disabled; functionality appears to be already present!");
+} else {
 
 // Setup the original events tracking
-var events = {};
+    var events = {};
 
 // Setup our event trackers
-var eventHandlers = {};
-eventHandlers[Page.navigatingToEvent] = [];
-eventHandlers[Page.navigatedToEvent] = [];
-eventHandlers[Page.navigatingFromEvent] = [];
-eventHandlers[Page.navigatedFromEvent] = [];
-eventHandlers[Page.shownModallyEvent] = [];
-eventHandlers[Page.showingModallyEvent] = [];
-eventHandlers[View.loadedEvent] = [];
-eventHandlers[View.unloadedEvent] = [];
+    var eventHandlers = {};
+    eventHandlers[Page.navigatingToEvent] = [];
+    eventHandlers[Page.navigatedToEvent] = [];
+    eventHandlers[Page.navigatingFromEvent] = [];
+    eventHandlers[Page.navigatedFromEvent] = [];
+    eventHandlers[Page.shownModallyEvent] = [];
+    eventHandlers[Page.showingModallyEvent] = [];
+    eventHandlers[View.loadedEvent] = [];
+    eventHandlers[View.unloadedEvent] = [];
 
 // The event handler names
-var eventNames = {};
-eventNames[Page.navigatedToEvent] = 'onNavigatedTo';
-eventNames[Page.navigatingToEvent] = 'onNavigatingTo';
-eventNames[Page.navigatedFromEvent] = 'onNavigatedFrom';
-eventNames[Page.navigatingFromEvent] = 'onNavigatingFrom';
-eventNames[Page.shownModallyEvent] = '_raiseShownModallyEvent';
-eventNames[Page.showingModallyEvent] = '_raiseShowingModallyEvent';
-eventNames[View.loadedEvent] = 'onLoaded';
-eventNames[View.unloadedEvent] =  'onUnloaded';
+    var eventNames = {};
+    eventNames[Page.navigatedToEvent] = 'onNavigatedTo';
+    eventNames[Page.navigatingToEvent] = 'onNavigatingTo';
+    eventNames[Page.navigatedFromEvent] = 'onNavigatedFrom';
+    eventNames[Page.navigatingFromEvent] = 'onNavigatingFrom';
+    eventNames[Page.shownModallyEvent] = '_raiseShownModallyEvent';
+    eventNames[Page.showingModallyEvent] = '_raiseShowingModallyEvent';
+    eventNames[View.loadedEvent] = 'onLoaded';
+    eventNames[View.unloadedEvent] = 'onUnloaded';
 
 
-/**
- * Setup a static on/addEventLister on the Page object
- * @type {Page.addEventListener}
- */
-Page.on = Page.addEventListener = function(event, callback, thisArg) {
-    if (typeof eventHandlers[event] === 'undefined') {
-        throw new Error("This global page event "+event+" does not exist, or is currently unsupported");
-    }
-    if (typeof callback !== 'function') {
-        throw new Error("Callback should be a function!");
-    }
-
-    // Dynamically hijack the event; so that we don't bother hijacking any events that aren't used
-    if (eventHandlers[event].length === 0) {
-        hijackEvent(event);
-    }
-    eventHandlers[event].push({callback: callback, thisArg: thisArg});
-};
-
-/**
- * Setup a static off/removeEventLister
- * @type {Page.removeEventListener}
- */
-Page.off = Page.removeEventListener = function(event, callback, thisArg) {
-    if (typeof eventHandlers[event] === "undefined") {
-        throw new Error("This global page event "+event+" does not exist.");
-    }
-    var orgLength = eventHandlers[event].length;
-    if (callback) {
-        var index = indexOfListener(eventHandlers[event], callback, thisArg);
-        if (index >= 0) {
-            eventHandlers[event].splice(index, 1);
+    /**
+     * Setup a static on/addEventLister on the Page object
+     * @type {Page.addEventListener}
+     */
+    Page.on = Page.addEventListener = function (event, callback, thisArg) {
+        if (typeof eventHandlers[event] === 'undefined') {
+            throw new Error("This global page event " + event + " does not exist, or is currently unsupported");
         }
-    } else {
-        eventHandlers[event] = [];
-    }
-    if (eventHandlers[event].length === 0 && orgLength !== 0) {
-        restoreEvent(event);
-    }
-};
+        if (typeof callback !== 'function') {
+            throw new Error("Callback should be a function!");
+        }
 
+        // Dynamically hijack the event; so that we don't bother hijacking any events that aren't used
+        if (eventHandlers[event].length === 0) {
+            hijackEvent(event);
+        }
+        eventHandlers[event].push({callback: callback, thisArg: thisArg});
+    };
+
+    /**
+     * Setup a static off/removeEventLister
+     * @type {Page.removeEventListener}
+     */
+    Page.off = Page.removeEventListener = function (event, callback, thisArg) {
+        if (typeof eventHandlers[event] === "undefined") {
+            throw new Error("This global page event " + event + " does not exist.");
+        }
+        var orgLength = eventHandlers[event].length;
+        if (callback) {
+            var index = indexOfListener(eventHandlers[event], callback, thisArg);
+            if (index >= 0) {
+                eventHandlers[event].splice(index, 1);
+            }
+        } else {
+            eventHandlers[event] = [];
+        }
+        if (eventHandlers[event].length === 0 && orgLength !== 0) {
+            restoreEvent(event);
+        }
+    };
+}
 
 /**
  * Used to dynamically hijack the event
@@ -107,6 +106,7 @@ function hijackEvent(event) {
     }
     Page.prototype[handlerName] = getEventHandler(event);
 }
+
 
 /**
  * Used to dynamically restore the event
@@ -129,7 +129,7 @@ function restoreEvent(event) {
  * @param thisArg
  * @returns {number}
  */
-function indexOfListener (events, callback, thisArg) {
+function indexOfListener(events, callback, thisArg) {
     var i;
     if (thisArg) {
         for (i = 0; i < events.length; i++) {
@@ -170,7 +170,8 @@ function getEventHandler(eventType) {
                 eventArgs = {
                     eventName: Page.shownModallyEvent,
                     object: this,
-                    context: arg2};
+                    context: arg2
+                };
                 break;
             case Page.showingModallyEvent:
                 eventArgs = {
@@ -196,6 +197,7 @@ function getEventHandler(eventType) {
         }
     };
 }
+
 
 
 
