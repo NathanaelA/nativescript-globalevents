@@ -10,10 +10,27 @@ console.keys = function(obj) {
         }
     }
     console.log("--------------------------");
+    console.log(" ");
+
 };
+
+page.on('pageCreated', function(args) {
+    console.log("Global Page Created event");
+    console.keys(args);
+});
+
+page.on('loadedFirst', function(args) {
+    console.log("Global Page Loaded FIRST event");
+    console.keys(args);
+});
 
 page.on('loaded', function(args) {
     console.log("Global Page Loaded event");
+    console.keys(args);
+});
+
+page.on('navigatingToFirst', function(args) {
+    console.log("Global Navigating to FIRST");
     console.keys(args);
 });
 
@@ -27,6 +44,10 @@ page.on('navigatedTo', function(args) {
     console.keys(args);
 });
 
+page.on('navigatedToFirst', function(args) {
+    console.log("Global Navigated to FIRST!");
+    console.keys(args);
+});
 
 
 application.start({ moduleName: "main-page" });
