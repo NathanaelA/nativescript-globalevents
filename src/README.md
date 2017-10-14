@@ -108,6 +108,13 @@ If callback is null on the off/removePageHandler it will remove ALL handlers.
 ## Angular and VueJS support
 Angular and VueJS has their own event systems, however both of them create a underlying NativeScript page(s) to do things.  So in those cases you can use these events to actually tie in before the Angular or Vue framework events occur.  This is probably rarely needed; but it is a option if you find you need it.
 
+### Angular
+Do to the fact that the nativescript-angular plugin actually gets a reference to the "Page" variable, you have two choice for using this in Angular
+1. You put the require('nativescript-globalevents') as the VERY first statement of the `main.ts` and `main.aot.ts` files
+2. You put it anywhere BUT, the pageCreated event will never be called, as is to late to monkey patch the creation part of the class after Angular has got a reference. 
+
+The `app.module.ts` has an example of how to tie into the events in Angular.    
+
 ### Sponsor
 
 <a target='_blank' rel='nofollow' href='https://app.codesponsor.io/link/HXrmpSuyowGyBLzwEVbqXdDa/NathanaelA/nativescript-globalevents'>

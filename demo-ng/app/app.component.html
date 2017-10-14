@@ -1,0 +1,8 @@
+<!-- https://docs.nativescript.org/angular/core-concepts/angular-navigation.html#page-router-outlet -->
+<GridLayout rows="auto,*,auto">
+    <Label text="No UI for GlobalEvents, see Console log!" class="red text-center"></Label>
+    <StackLayout row="1">
+<page-router-outlet></page-router-outlet>
+    </StackLayout>
+    <Label (tap)="tap()" row="2" text="(c)2015-2017, Master Technology" class="text-center copyright"></Label>
+</GridLayout>

@@ -1,5 +1,16 @@
+/*
+In NativeScript, the app.js file is the entry point to your application.
+You can use this file to perform app-level initialization, but the primary
+purpose of the file is to pass control to the app’s first module.
+*/
+
+require("./bundle-config");
 var application = require("application");
+
+// Grab the Page, so we can add our events
 var page = require('ui/page').Page;
+
+// Install our GlobalEvents so the below events actually work
 require('nativescript-globalevents');
 
 console.keys = function(obj) {
@@ -50,4 +61,11 @@ page.on('navigatedToFirst', function(args) {
 });
 
 
+// ------------------------------------------------
+
 application.start({ moduleName: "main-page" });
+
+/*
+Do not place any code after the application has been started as it will not
+be executed on iOS.
+*/

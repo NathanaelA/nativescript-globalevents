@@ -1,18 +1,23 @@
 {
-  "nativescript": {
-    "id": "org.nativescript.demo",
-    "tns-android": {
-      "version": "3.2.0"
-    }
-  },
-  "dependencies": {
-    "nativescript-globalevents": "file:..\\src",
-    "tns-core-modules": "^3.2.0"
-  },
-  "devDependencies": {
-    "babel-traverse": "6.4.5",
-    "babel-types": "6.4.5",
-    "babylon": "6.4.5",
-    "lazy": "1.0.11"
-  }
+	"description": "NativeScript-GlobalEvents",
+	"license": "MIT",
+	"readme": "See Readme.md",
+	"repository": "https://github.com/NathanaelA/NativeScript-GlobalEvents",
+	"nativescript": {
+		"id": "technology.master.demo",
+		"tns-android": {
+			"version": "3.2.0"
+		}
+	},
+	"dependencies": {
+		"nativescript-globalevents": "file:..\\src",
+		"nativescript-theme-core": "~1.0.2",
+		"tns-core-modules": "~3.2.0"
+	},
+	"devDependencies": {
+		"babel-traverse": "6.4.5",
+		"babel-types": "6.4.5",
+		"babylon": "6.4.5",
+		"lazy": "1.0.11"
+	}
 }

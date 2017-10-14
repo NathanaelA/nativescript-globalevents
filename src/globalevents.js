@@ -5,7 +5,7 @@
  * I do contract work in most languages, so let me solve your problems!
  *
  * Any questions please feel free to email me or put a issue up on the github repo
- * Version 1.2.0                                      Nathan@master-technology.com
+ * Version 1.2.1                                      Nathan@master-technology.com
  *********************************************************************************/
 "use strict";
 
@@ -94,10 +94,10 @@ if (page.Page.on || page.Page.addEventListener) {
 
     // Overwrite the Page class with our Page class.
     var Page = (function (_super) {
-        __extends(NewPage, _super);
-        function NewPage() {
+        __extends(Page, _super);
+        function Page() {
             var _this = _super !== null && _super.apply(this, arguments) || this;
-            runEvent(NewPage.createdPageEvent, {object: this});
+            runEvent(Page.createdPageEvent, {object: this});
             return _this;
         }
 
@@ -105,7 +105,7 @@ if (page.Page.on || page.Page.addEventListener) {
          * Setup a static on/addEventLister on the Page object
          * @type {Page.addEventListener}
          */
-        NewPage.on = NewPage.addEventListener = function (event, callback, thisArg) {
+        Page.on = Page.addEventListener = function (event, callback, thisArg) {
             if (typeof eventHandlers[event] === 'undefined') {
                 throw new Error("This global page event " + event + " does not exist, or is currently unsupported");
             }
@@ -130,7 +130,7 @@ if (page.Page.on || page.Page.addEventListener) {
          * Setup a static off/removeEventLister
          * @type {Page.removeEventListener}
          */
-        NewPage.off = NewPage.removeEventListener = function (event, callback, thisArg) {
+        Page.off = Page.removeEventListener = function (event, callback, thisArg) {
             if (typeof eventHandlers[event] === "undefined") {
                 throw new Error("This global page event " + event + " does not exist.");
             }
@@ -147,7 +147,7 @@ if (page.Page.on || page.Page.addEventListener) {
                 restoreEvent(event);
             }
         };
-        return NewPage;
+        return Page;
     }(page.Page));
 
     // In case they include globalevents AFTER they have the Page variable; we need to
@@ -155,8 +155,16 @@ if (page.Page.on || page.Page.addEventListener) {
     page.Page.on = page.Page.addEventListener = Page.on;
     page.Page.off = page.Page.removeEventListener = Page.off;
 
-    // Overwrite the Page variable with our class
-    page.Page = Page;
+    // If NativeScript-Angular has been loaded; this will be defined
+    if (typeof global.Zone === "undefined") {
+        // Overwrite the Page variable with our class only in a PAN or VUE app
+        page.Page = Page;
+    } else {
+        // Because we are in Angular; we will grab the "Default" page class and
+        // use it, instead of our new Page class.  Basically we "forget" about our
+        // new page class in Angular mode.
+        Page = page.Page;
+    }
 }
 
 /**

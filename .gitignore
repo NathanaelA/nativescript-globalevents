@@ -1,5 +1,9 @@
 /.idea
 /demo/node_modules/
 /demo/platforms/
+/demo-ng/platforms/
+/demo-ng/node_modules/
 *.tar
 *.tgz
+/demo-ng/*.js
+/demo-ng/**/*.js
