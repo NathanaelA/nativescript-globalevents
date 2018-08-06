@@ -12,8 +12,8 @@
 /* jshint camelcase: false, nodejs: true */
 /* global android */
 
-var page = require('ui/page');
-var View = require('ui/core/view').View;
+var page = require('tns-core-modules/ui/page');
+var View = require('tns-core-modules/ui/core/view').View;
 
 // global.android is already defined on android devices
 // We are defining global.ios on ios devices because the ios team refuses to do it
