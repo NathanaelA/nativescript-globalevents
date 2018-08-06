@@ -115,8 +115,3 @@ Do to the fact that the nativescript-angular plugin actually gets a reference to
 
 The `app.module.ts` has an example of how to tie into the events in Angular.    
 
-### Sponsor
-
-<a target='_blank' rel='nofollow' href='https://app.codesponsor.io/link/HXrmpSuyowGyBLzwEVbqXdDa/NathanaelA/nativescript-globalevents'>
-  <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/HXrmpSuyowGyBLzwEVbqXdDa/NathanaelA/nativescript-globalevents.svg' />
-</a>
