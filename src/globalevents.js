@@ -23,149 +23,145 @@ if (global.NSObject && global.NSString && typeof global.ios === "undefined") {
 }
 
 
-// If NS has added this ability to core; we want our plugin to gracefully stop working without doing anything...
-if (page.Page.on || page.Page.addEventListener) {
-    console.log("NativeScript-globalevents auto disabled; functionality appears to be already present!");
-} else {
-    var createdPageEvent = "pageCreated";
-    var loadedFirst = View.loadedEvent + "First";
-    var unloadedFirst = View.unloadedEvent + "First";
-    var navigatingToFirst = page.Page.navigatingToEvent + "First";
-    var navigatingFromFirst = page.Page.navigatingFromEvent + "First";
-    var navigatedToFirst = page.Page.navigatedToEvent + "First";
-    var navigatedFromFirst = page.Page.navigatedFromEvent + "First";
-    var shownModallyFirst = page.Page.shownModallyEvent + "First";
-    var showingModallyFirst = page.Page.showingModallyEvent + "First";
+var createdPageEvent = "pageCreated";
+var loadedFirst = View.loadedEvent + "First";
+var unloadedFirst = View.unloadedEvent + "First";
+var navigatingToFirst = page.Page.navigatingToEvent + "First";
+var navigatingFromFirst = page.Page.navigatingFromEvent + "First";
+var navigatedToFirst = page.Page.navigatedToEvent + "First";
+var navigatedFromFirst = page.Page.navigatedFromEvent + "First";
+var shownModallyFirst = page.Page.shownModallyEvent + "First";
+var showingModallyFirst = page.Page.showingModallyEvent + "First";
 
-    // Setup the original events tracking
-    var events = {};
+// Setup the original events tracking
+var events = {};
 
-    // Setup our event trackers
-    var eventHandlers = {};
-    eventHandlers[page.Page.navigatingToEvent] = [];
-    eventHandlers[page.Page.navigatedToEvent] = [];
-    eventHandlers[page.Page.navigatingFromEvent] = [];
-    eventHandlers[page.Page.navigatedFromEvent] = [];
-    eventHandlers[page.Page.shownModallyEvent] = [];
-    eventHandlers[page.Page.showingModallyEvent] = [];
-    eventHandlers[View.loadedEvent] = [];
-    eventHandlers[View.unloadedEvent] = [];
-    eventHandlers[createdPageEvent] = [];
-    eventHandlers[loadedFirst] = [];
-    eventHandlers[unloadedFirst] = [];
-    eventHandlers[navigatingToFirst] = [];
-    eventHandlers[navigatingFromFirst] = [];
-    eventHandlers[navigatedToFirst] = [];
-    eventHandlers[navigatedFromFirst] = [];
-    eventHandlers[showingModallyFirst] = [];
-    eventHandlers[shownModallyFirst] = [];
+// Setup our event trackers
+var eventHandlers = {};
+eventHandlers[page.Page.navigatingToEvent] = [];
+eventHandlers[page.Page.navigatedToEvent] = [];
+eventHandlers[page.Page.navigatingFromEvent] = [];
+eventHandlers[page.Page.navigatedFromEvent] = [];
+eventHandlers[page.Page.shownModallyEvent] = [];
+eventHandlers[page.Page.showingModallyEvent] = [];
+eventHandlers[View.loadedEvent] = [];
+eventHandlers[View.unloadedEvent] = [];
+eventHandlers[createdPageEvent] = [];
+eventHandlers[loadedFirst] = [];
+eventHandlers[unloadedFirst] = [];
+eventHandlers[navigatingToFirst] = [];
+eventHandlers[navigatingFromFirst] = [];
+eventHandlers[navigatedToFirst] = [];
+eventHandlers[navigatedFromFirst] = [];
+eventHandlers[showingModallyFirst] = [];
+eventHandlers[shownModallyFirst] = [];
 
 
-    // The event handler names
-    var eventNames = {};
-    eventNames[page.Page.navigatedToEvent] = 'onNavigatedTo';
-    eventNames[page.Page.navigatingToEvent] = 'onNavigatingTo';
-    eventNames[page.Page.navigatedFromEvent] = 'onNavigatedFrom';
-    eventNames[page.Page.navigatingFromEvent] = 'onNavigatingFrom';
-    eventNames[page.Page.shownModallyEvent] = '_raiseShownModallyEvent';
-    eventNames[page.Page.showingModallyEvent] = '_raiseShowingModallyEvent';
-    eventNames[View.loadedEvent] = 'onLoaded';
-    eventNames[View.unloadedEvent] = 'onUnloaded';
-    eventNames[createdPageEvent] = createdPageEvent;
-    eventNames[loadedFirst] = 'onLoaded';
-    eventNames[unloadedFirst] = 'onUnloaded';
-    eventNames[navigatingToFirst] = 'onNavigatingTo';
-    eventNames[navigatingFromFirst] = 'onNavigatingFrom';
-    eventNames[navigatedToFirst] = 'onNavigatedTo';
-    eventNames[navigatedFromFirst] = 'onNavigatedFrom';
-    eventNames[shownModallyFirst] = '_raiseShownModallyEvent';
-    eventNames[showingModallyFirst] = '_raiseShowingModallyEvent';
+// The event handler names
+var eventNames = {};
+eventNames[page.Page.navigatedToEvent] = 'onNavigatedTo';
+eventNames[page.Page.navigatingToEvent] = 'onNavigatingTo';
+eventNames[page.Page.navigatedFromEvent] = 'onNavigatedFrom';
+eventNames[page.Page.navigatingFromEvent] = 'onNavigatingFrom';
+eventNames[page.Page.shownModallyEvent] = '_raiseShownModallyEvent';
+eventNames[page.Page.showingModallyEvent] = '_raiseShowingModallyEvent';
+eventNames[View.loadedEvent] = 'onLoaded';
+eventNames[View.unloadedEvent] = 'onUnloaded';
+eventNames[createdPageEvent] = createdPageEvent;
+eventNames[loadedFirst] = 'onLoaded';
+eventNames[unloadedFirst] = 'onUnloaded';
+eventNames[navigatingToFirst] = 'onNavigatingTo';
+eventNames[navigatingFromFirst] = 'onNavigatingFrom';
+eventNames[navigatedToFirst] = 'onNavigatedTo';
+eventNames[navigatedFromFirst] = 'onNavigatedFrom';
+eventNames[shownModallyFirst] = '_raiseShownModallyEvent';
+eventNames[showingModallyFirst] = '_raiseShowingModallyEvent';
 
-    /** Add our newly Created Page Event **/
-    page.Page.createdPageEvent = createdPageEvent;
-    page.Page.loadedFirst = loadedFirst;
-    page.Page.unloadedFirst = unloadedFirst;
-    page.Page.navigatedFromFirst = navigatedFromFirst;
-    page.Page.navigatingFromFirst = navigatingFromFirst;
-    page.Page.navigatedToFirst = navigatedToFirst;
-    page.Page.navigatingToFirst = navigatingToFirst;
-    page.Page.showingModallyFirst = showingModallyFirst;
-    page.Page.shownModallyFirst = shownModallyFirst;
+/** Add our newly Created Page Event **/
+page.Page.createdPageEvent = createdPageEvent;
+page.Page.loadedFirst = loadedFirst;
+page.Page.unloadedFirst = unloadedFirst;
+page.Page.navigatedFromFirst = navigatedFromFirst;
+page.Page.navigatingFromFirst = navigatingFromFirst;
+page.Page.navigatedToFirst = navigatedToFirst;
+page.Page.navigatingToFirst = navigatingToFirst;
+page.Page.showingModallyFirst = showingModallyFirst;
+page.Page.shownModallyFirst = shownModallyFirst;
 
-    // Overwrite the Page class with our Page class.
-    var Page = (function (_super) {
-        __extends(Page, _super);
-        function Page() {
-            var _this = _super !== null && _super.apply(this, arguments) || this;
-            runEvent(Page.createdPageEvent, {object: this});
-            return _this;
+// Overwrite the Page class with our Page class.
+var Page = (function (_super) {
+    __extends(Page, _super);
+    function Page() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        runEvent(Page.createdPageEvent, {object: this});
+        return _this;
+    }
+
+    /**
+     * Setup a static on/addEventLister on the Page object
+     * @type {Page.addEventListener}
+     */
+    Page.on = Page.addEventListener = function (event, callback, thisArg) {
+        if (typeof eventHandlers[event] === 'undefined') {
+            throw new Error("This global page event " + event + " does not exist, or is currently unsupported");
+        }
+        if (typeof callback !== 'function') {
+            throw new Error("Callback should be a function!");
         }
 
-        /**
-         * Setup a static on/addEventLister on the Page object
-         * @type {Page.addEventListener}
-         */
-        Page.on = Page.addEventListener = function (event, callback, thisArg) {
-            if (typeof eventHandlers[event] === 'undefined') {
-                throw new Error("This global page event " + event + " does not exist, or is currently unsupported");
-            }
-            if (typeof callback !== 'function') {
-                throw new Error("Callback should be a function!");
-            }
+        var lookupEvent;
+        if (event.indexOf("First") !== -1) {
+            lookupEvent = event.substring(0, event.length-5);
+        } else {
+            lookupEvent = event;
+        }
+        // Dynamically hijack the event; so that we don't bother hijacking any events that aren't used
+        if (eventHandlers[event].length === 0) {
+            hijackEvent(lookupEvent);
+        }
+        eventHandlers[event].push({callback: callback, thisArg: thisArg});
+    };
 
-            var lookupEvent;
-            if (event.indexOf("First") !== -1) {
-                lookupEvent = event.substring(0, event.length-5);
-            } else {
-                lookupEvent = event;
+    /**
+     * Setup a static off/removeEventLister
+     * @type {Page.removeEventListener}
+     */
+    Page.off = Page.removeEventListener = function (event, callback, thisArg) {
+        if (typeof eventHandlers[event] === "undefined") {
+            throw new Error("This global page event " + event + " does not exist.");
+        }
+        var orgLength = eventHandlers[event].length;
+        if (callback) {
+            var index = indexOfListener(eventHandlers[event], callback, thisArg);
+            if (index >= 0) {
+                eventHandlers[event].splice(index, 1);
             }
-            // Dynamically hijack the event; so that we don't bother hijacking any events that aren't used
-            if (eventHandlers[event].length === 0) {
-                hijackEvent(lookupEvent);
-            }
-            eventHandlers[event].push({callback: callback, thisArg: thisArg});
-        };
+        } else {
+            eventHandlers[event] = [];
+        }
+        if (eventHandlers[event].length === 0 && orgLength !== 0) {
+            restoreEvent(event);
+        }
+    };
+    return Page;
+}(page.Page));
 
-        /**
-         * Setup a static off/removeEventLister
-         * @type {Page.removeEventListener}
-         */
-        Page.off = Page.removeEventListener = function (event, callback, thisArg) {
-            if (typeof eventHandlers[event] === "undefined") {
-                throw new Error("This global page event " + event + " does not exist.");
-            }
-            var orgLength = eventHandlers[event].length;
-            if (callback) {
-                var index = indexOfListener(eventHandlers[event], callback, thisArg);
-                if (index >= 0) {
-                    eventHandlers[event].splice(index, 1);
-                }
-            } else {
-                eventHandlers[event] = [];
-            }
-            if (eventHandlers[event].length === 0 && orgLength !== 0) {
-                restoreEvent(event);
-            }
-        };
-        return Page;
-    }(page.Page));
+// In case they include globalevents AFTER they have the Page variable; we need to
+// Make sure the original Page variable also has these events.
+page.Page.on = page.Page.addEventListener = Page.on;
+page.Page.off = page.Page.removeEventListener = Page.off;
 
-    // In case they include globalevents AFTER they have the Page variable; we need to
-    // Make sure the original Page variable also has these events.
-    page.Page.on = page.Page.addEventListener = Page.on;
-    page.Page.off = page.Page.removeEventListener = Page.off;
-
-    // If NativeScript-Angular has been loaded; this will be defined
-    if (typeof global.Zone === "undefined") {
-        // Overwrite the Page variable with our class only in a PAN or VUE app
-        page.Page = Page;
-    } else {
-        // Because we are in Angular; we will grab the "Default" page class and
-        // use it, instead of our new Page class.  Basically we "forget" about our
-        // new page class in Angular mode.
-        Page = page.Page;
-    }
+// If NativeScript-Angular has been loaded; this will be defined
+if (typeof global.Zone === "undefined") {
+    // Overwrite the Page variable with our class only in a PAN or VUE app
+    page.Page = Page;
+} else {
+    // Because we are in Angular; we will grab the "Default" page class and
+    // use it, instead of our new Page class.  Basically we "forget" about our
+    // new page class in Angular mode.
+    Page = page.Page;
 }
+
 
 /**
  * Used to dynamically hijack the event
@@ -298,7 +294,3 @@ function getEventHandler(eventType) {
         runEvent(eventType, eventArgs);
     };
 }
-
-
-
-
