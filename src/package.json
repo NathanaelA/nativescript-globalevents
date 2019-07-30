@@ -1,6 +1,6 @@
 {
   "name": "nativescript-globalevents",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "A NativeScript plugin to deal with global page events",
   "main": "globalevents",
   "nativescript": {
@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/nathanaela/nativescript-globalevents.git"
+    "url": "https://git.proplugins.org/proplugins/nativescript-globalevents.git"
   },
   "keywords": [
     "NativeScript", "page events", "global events", "ios", "android"
@@ -29,11 +29,14 @@
   },
   "license": {
     "type": "MIT",
-    "url": "https://github.com/nathanaela/nativescript-globalevents/blob/master/LICENSE"
+    "url": "https://git.proplugins.org/proplugins/nativescript-globalevents/blob/master/LICENSE"
   },
   "bugs": {
-    "url": "https://github.com/nathanaela/nativescript-globalevents/issues"
+    "url": "https://git.proplugins.org/proplugins/nativescript-globalevents/issues"
   },
-  "homepage": "https://github.com/nathanaela/nativescript-globalevents",
-  "readmeFilename": "README.md"
+  "homepage": "https://git.proplugins.org/proplugins/nativescript-globalevents",
+  "readmeFilename": "README.md",
+  "scripts": {
+    "postinstall": "node postinstall.js || echo \"ignore\""
+  }
 }
